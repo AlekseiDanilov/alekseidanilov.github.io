@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>JokeSwipe</title>
+
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #ff5f6d, #ffc371);
+      --card-bg: #ffffff;
+      --like: #2ecc71;
+      --dislike: #ff4757;
+      --text-dark: #2f3542;
+      --shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      background: var(--bg-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-dark);
+    }
+
+    .app {
+      width: 100%;
+      max-width: 420px;
+      height: 100vh;
+      padding: env(safe-area-inset-top) 16px env(safe-area-inset-bottom);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      text-align: center;
+      padding: 16px 0;
+      font-size: 22px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 0.5px;
+    }
+
+    .card-wrapper {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      width: 100%;
+      background: var(--card-bg);
+      border-radius: 24px;
+      padding: 28px 22px;
+      box-shadow: var(--shadow);
+      text-align: center;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .card h2 {
+      margin: 0 0 12px;
+      font-size: 18px;
+      opacity: 0.6;
+    }
+
+    .joke {
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 24px 0 16px;
+    }
+
+    .btn {
+      flex: 1;
+      height: 64px;
+      border-radius: 20px;
+      border: none;
+      font-size: 28px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .btn:active {
+      transform: scale(0.95);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+
+    .btn.like {
+      background: var(--like);
+      color: #fff;
+    }
+
+    .btn.dislike {
+      background: var(--dislike);
+      color: #fff;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: rgba(255,255,255,0.7);
+      padding-bottom: 8px;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <div class="header">
+      JokeSwipe 🤡
+    </div>
+
+    <div class="card-wrapper">
+      <div class="card">
+        <h2>Шутка дня</h2>
+        <div class="joke">
+          Почему программисты любят тёмную тему?<br><br>
+          Потому что свет привлекает баги 🐛
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn dislike">👎</button>
+      <button class="btn like">👍</button>
+    </div>
+
+    <div class="footer">
+      Свайпай шутки как в Tinder
+    </div>
+  </div>
+</body>
+</html>
