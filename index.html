@@ -18,6 +18,7 @@
     * {
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
+      user-select: none;
     }
 
     body {
@@ -28,7 +29,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--text-dark);
     }
 
     .app {
@@ -46,7 +46,6 @@
       font-size: 22px;
       font-weight: 800;
       color: #fff;
-      letter-spacing: 0.5px;
     }
 
     .card-wrapper {
@@ -54,6 +53,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
     }
 
     .card {
@@ -63,24 +63,24 @@
       padding: 28px 22px;
       box-shadow: var(--shadow);
       text-align: center;
-      animation: fadeIn 0.4s ease;
+      transition: transform 0.3s ease, opacity 0.3s ease;
     }
 
     .card h2 {
       margin: 0 0 12px;
-      font-size: 18px;
-      opacity: 0.6;
+      font-size: 16px;
+      opacity: 0.5;
     }
 
     .joke {
       font-size: 20px;
       font-weight: 600;
       line-height: 1.4;
+      color: var(--text-dark);
     }
 
     .actions {
       display: flex;
-      justify-content: space-between;
       gap: 20px;
       padding: 24px 0 16px;
     }
@@ -91,15 +91,13 @@
       border-radius: 20px;
       border: none;
       font-size: 28px;
-      font-weight: 700;
       cursor: pointer;
       box-shadow: var(--shadow);
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      transition: transform 0.15s ease;
     }
 
     .btn:active {
       transform: scale(0.95);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
     }
 
     .btn.like {
@@ -118,44 +116,79 @@
       color: rgba(255,255,255,0.7);
       padding-bottom: 8px;
     }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
   </style>
 </head>
 
 <body>
   <div class="app">
-    <div class="header">
-      JokeSwipe 🤡
-    </div>
+    <div class="header">JokeSwipe 🤡</div>
 
     <div class="card-wrapper">
-      <div class="card">
+      <div class="card" id="card">
         <h2>Шутка дня</h2>
-        <div class="joke">
-          Почему программисты любят тёмную тему?<br><br>
-          Потому что свет привлекает баги 🐛
-        </div>
+        <div class="joke" id="jokeText"></div>
       </div>
     </div>
 
     <div class="actions">
-      <button class="btn dislike">👎</button>
-      <button class="btn like">👍</button>
+      <button class="btn dislike" id="dislikeBtn">👎</button>
+      <button class="btn like" id="likeBtn">👍</button>
     </div>
 
-    <div class="footer">
-      Свайпай шутки как в Tinder
-    </div>
+    <div class="footer">Свайпай как в Tinder</div>
   </div>
+
+  <script>
+    const jokes = [
+      "Почему программисты любят тёмную тему? Потому что свет привлекает баги 🐛",
+      "— Ты где работаешь?\n— В багфиксе.\n— А это где?\n— В проде 😐",
+      "Программист — это человек, который решает проблему, о существовании которой вы не знали, способом, который вы не понимаете.",
+      "Сначала я писал код. Потом код писал меня.",
+      "Работает — не трогай. Не работает — не трогай. 🤷‍♂️"
+    ];
+
+    let index = 0;
+    const card = document.getElementById("card");
+    const jokeText = document.getElementById("jokeText");
+
+    function showJoke() {
+      jokeText.textContent = jokes[index] || "Шутки закончились 😢";
+      card.style.transform = "translateX(0)";
+      card.style.opacity = "1";
+    }
+
+    function nextJoke(direction) {
+      card.style.transform =
+        direction === "like"
+          ? "translateX(120%) rotate(10deg)"
+          : "translateX(-120%) rotate(-10deg)";
+      card.style.opacity = "0";
+
+      setTimeout(() => {
+        index++;
+        showJoke();
+      }, 300);
+    }
+
+    document.getElementById("likeBtn").onclick = () => nextJoke("like");
+    document.getElementById("dislikeBtn").onclick = () => nextJoke("dislike");
+
+    // Swipe logic
+    let startX = 0;
+
+    card.addEventListener("touchstart", e => {
+      startX = e.touches[0].clientX;
+    });
+
+    card.addEventListener("touchend", e => {
+      const endX = e.changedTouches[0].clientX;
+      const diff = endX - startX;
+
+      if (diff > 80) nextJoke("like");
+      if (diff < -80) nextJoke("dislike");
+    });
+
+    showJoke();
+  </script>
 </body>
 </html>
